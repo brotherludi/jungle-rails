@@ -1,8 +1,7 @@
-<section class="products-show">
+<section class="products-show"> <%# Product detail page %>
   <header class="page-header">
     <h1><%= link_to @product.category.name, @product.category %> &raquo; <%= @product.name %></h1>
   </header>
-
   <article class="product-detail">
     <%= image_tag @product.image.url, class: 'main-img' %>
     <div>
@@ -12,12 +11,17 @@
         <span><%= @product.quantity %> in stock at </span>
         <span><%= number_to_currency(@product.price, precision: 2) %></span>
       </div>
-      <div class="price">          
-        <%= button_to add_item_cart_path(product_id: @product.id), class: 'btn' , method: :post do %>
-          <%= fa_icon "shopping-cart", text: 'Add' %>
-        <% end %>          
+      <div class="price">
+        <% if @product.quantity.zero? %>
+          <%= button_tag class: 'btn sold-out-btn', disabled: true do %>
+            <%= fa_icon "shopping-cart", text: 'Sold Out', class: 'sold-out-icon' %>
+          <% end %>
+        <% else %>
+          <%= button_to add_item_cart_path(product_id: @product.id), class: 'btn add-btn', method: :post do %>
+            <%= fa_icon "shopping-cart", text: 'Add' %>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </article>
-
 </section>
