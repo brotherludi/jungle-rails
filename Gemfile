@@ -80,3 +80,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Be able to format ruby files
+gem 'rubocop', require: false
+
+# Allows to load environment variables from the .env file into Rails application
+gem 'dotenv-rails', groups: [:development, :test]
