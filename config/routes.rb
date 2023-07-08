@@ -1,22 +1,38 @@
 Rails.application.routes.draw do
-  get '/about', to: 'about#index', as: 'about'
+  # Public routes
   root to: 'products#index'
+  get '/about', to: 'about#index', as: 'about'
+  get '/register', to: 'users#new', as: 'register'
+  post '/register', to: 'users#create'
+  get '/login', to: 'sessions#new', as: 'login'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy', as: 'logout'
 
+  # Resource routes
   resources :products, only: %i[index show]
   resources :categories, only: [:show]
-
-  resource :cart, only: [:show] do
-    post   :add_item
-    post   :remove_item
-  end
-
   resources :orders, only: %i[create show]
 
+  # Cart routes
+  resource :cart, only: [:show] do
+    post :add_item
+    post :remove_item
+  end
+
+  # Admin routes
   namespace :admin do
     root to: 'dashboard#show'
     resources :products, except: %i[edit update show]
     resources :categories, only: [:index, :new, :create, :destroy]
   end
+
+  # User routes
+  resources :users, only: %i[new create]
+
+  # Session routes
+  resources :sessions, only: %i[new create destroy]
+end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -72,4 +88,3 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-end
